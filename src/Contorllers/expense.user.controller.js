@@ -27,3 +27,30 @@ exports.data = (req, res) => {
       });
     });
 };
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Find user by email
+    const user = await users.findOne({ email });
+
+    if (!user) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    // Check if password matches
+    if (user.password !== password) {
+      return res.status(401).send({ message: "Invalid credentials" });
+    }
+
+    // Login successful, return user data (excluding password)
+    res.send({
+      id: user._id,
+      userName: user.userName,
+      email: user.email,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: "Server error" });
+  }
+};

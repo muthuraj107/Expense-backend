@@ -14,4 +14,6 @@ router.put('/put/:id',expense.update)
 
 router.post('/user/post',users.create)
 router.get('/user/data',users.data)
+
+router.post('/user/login',users.login)
 module.exports = router;
