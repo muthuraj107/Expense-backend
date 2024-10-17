@@ -1,19 +1,18 @@
 const express = require("express");
 const router = express.Router();
+const expense = require("../Contorllers/expence.controller");
+const users = require("../Contorllers/expense.user.controller");
+const { verifyToken } = require("../middlewares/auth.middleware"); // Import your middleware
 
-const expense=require('../Contorllers/expence.controller')
-const users=require('../Contorllers/expense.user.controller') 
+// Protected routes
+router.get("/data/:userId", verifyToken, expense.data); // Protecting data route
+router.delete("/delete/:id", verifyToken, expense.delete); // Protecting delete route
+router.put("/put/:id", verifyToken, expense.update); // Protecting update route
 
-router.post('/post',expense.create)
+// Public routes
+router.post("/post", expense.create);
+router.post("/user/post", users.create);
+router.get("/user/data", users.data);
+router.post("/user/login", users.login);
 
-router.get('/data/:userId',expense.data)
-
-router.delete('/delete/:id',expense.delete)
-
-router.put('/put/:id',expense.update)
-
-router.post('/user/post',users.create)
-router.get('/user/data',users.data)
-
-router.post('/user/login',users.login)
 module.exports = router;
